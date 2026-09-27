@@ -1,31 +1,34 @@
-# Surgical Logbook — Free Android-first PWA
+# Surgical Logbook — production-oriented Android-first PWA
 
-## 1. Supabase
-You already created the `cases` table and private `case-files` bucket. Run `setup.sql` in Supabase SQL Editor.
+This build uses **Supabase PostgreSQL as the cloud source of truth** and **IndexedDB as the offline cache/queue**. It does not use localStorage for case persistence.
 
-## 2. Connect the app
-Open `config.js` and replace the two placeholders with your Supabase **Project URL** and **Publishable key**. Never use the secret/service_role key.
+## Deploy to GitHub Pages
+1. Extract this ZIP.
+2. Upload the files inside the folder to the root of `Surgical-logbook`.
+3. Keep `config.js` in the repo because it contains only the browser-safe publishable key; RLS protects data.
+4. Commit changes and wait for GitHub Pages to finish.
+5. Open the Pages URL over HTTPS and optionally install it from Chrome → Add to Home screen.
 
-## 3. Run locally
-Serve the folder over HTTP (not file://), e.g. with VS Code Live Server or any static host.
+## Supabase migration
+Run `setup.sql` once in Supabase SQL Editor. It adds production fields, UUIDs, timestamps, RLS, private storage policies, user profiles, the case-number RPC and Realtime publication.
 
-## 4. GitHub Pages
-Upload all files to a GitHub repository. Enable Pages from the repository Settings. Open the Pages URL on Android Chrome and choose Install app/Add to Home screen.
+If Supabase reports that `supabase_realtime` already contains `cases`, that single publication statement can be skipped; the rest of the migration remains valid.
 
-## Notes
-- Supabase Auth is used for accounts.
-- Cases are stored in PostgreSQL; RLS restricts each user to their own cases.
-- `case-files` is private and policies expect paths beginning with the authenticated user UUID.
-- The service worker caches the app shell for offline opening. Case offline queueing can be extended in the next build.
+## Important current capabilities
+- Supabase Auth email/password + existing phone OTP UI
+- Stable UUID case IDs
+- IndexedDB offline cache and pending sync queue
+- Cloud upsert + pull + Realtime case changes
+- Auto-generated yearly case IDs when online
+- Case entry, drafts, validation, attachments
+- Search and filters
+- Dashboard/statistics from stored records
+- Trash/recovery through soft delete
+- JSON/CSV export and print-to-PDF workflow
+- PWA service worker with cache versioning
 
+## Limitations that require a native/backend companion
+Google Drive OAuth, full Android SAF integration, biometric/PIN lock, true background WorkManager sync, and packaged photo backup archives are not safely implementable as a GitHub Pages-only static client without an OAuth/backend/native layer. This build intentionally does not hard-code Google credentials or fake those features.
 
-## Password recovery
-The app includes a Forgot password flow and a secure reset-password screen. The recovery email redirects back to the GitHub Pages app.
-
-## v6 case-entry upgrade
-- Sectioned Add/Edit Case form
-- Better mobile-friendly operative entry layout
-- Attachment image/PDF preview before upload
-- Required-field/date validation
-- Private attachment opening through temporary signed URLs
-- Existing authentication and password recovery retained
+## Required acceptance tests
+Run the 12 tests in the product specification after deployment. In particular test: close/reopen, offline case creation, reconnect, second-device login, edit propagation, five-photo sync, trash restore, export/import, Excel/CSV, PDF print, and OT note generation.
