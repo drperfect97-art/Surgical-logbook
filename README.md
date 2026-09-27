@@ -32,3 +32,10 @@ Google Drive OAuth, full Android SAF integration, biometric/PIN lock, true backg
 
 ## Required acceptance tests
 Run the 12 tests in the product specification after deployment. In particular test: close/reopen, offline case creation, reconnect, second-device login, edit propagation, five-photo sync, trash restore, export/import, Excel/CSV, PDF print, and OT note generation.
+
+
+## v11 patch
+- Case detail close button fixed.
+- Local pending/synced photos are visible from the case detail page.
+- Attachment errors are retained as failed/pending sync status.
+- Service worker cache bumped to v11.
