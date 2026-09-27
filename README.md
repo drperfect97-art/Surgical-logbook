@@ -21,3 +21,11 @@ Upload all files to a GitHub repository. Enable Pages from the repository Settin
 
 ## Password recovery
 The app includes a Forgot password flow and a secure reset-password screen. The recovery email redirects back to the GitHub Pages app.
+
+## v6 case-entry upgrade
+- Sectioned Add/Edit Case form
+- Better mobile-friendly operative entry layout
+- Attachment image/PDF preview before upload
+- Required-field/date validation
+- Private attachment opening through temporary signed URLs
+- Existing authentication and password recovery retained
