@@ -17,3 +17,7 @@ Upload all files to a GitHub repository. Enable Pages from the repository Settin
 - Cases are stored in PostgreSQL; RLS restricts each user to their own cases.
 - `case-files` is private and policies expect paths beginning with the authenticated user UUID.
 - The service worker caches the app shell for offline opening. Case offline queueing can be extended in the next build.
+
+
+## Password recovery
+The app includes a Forgot password flow and a secure reset-password screen. The recovery email redirects back to the GitHub Pages app.
